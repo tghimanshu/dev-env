@@ -1,3 +1,10 @@
 #!/usr/bin/env bash
 
-echo "Hello from Neovim!"
+sudo apt install build-essential cmake curl gettext liblua5.1-0-dev lua5.1 ninja-build
+
+git clone -b v0.11.5 https://github.com/neovim/neovim.git ~/personal/neovim
+cd ~/personal/neovim
+
+make CMAKE_BUILD_TYPE="RelWithDebInfo"
+
+sudo make install
