@@ -1,0 +1,33 @@
+- name: My first playbook
+  hosts: localhost
+  tasks:
+  - name: Install helping libs
+    become: true
+    ansible.builtin.apt:
+      pkg:
+      - build-essential
+      - cmake
+      - curl
+      - gettext
+      - git
+      - liblua5.1-0-dev
+      - lua5.1
+      - ninja-build
+
+  - name: Git neovim
+    ansible.builtin.git:
+      repo: "https://github.com/neovim/neovim.git"
+      dest: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
+      version: v0.11.5
+
+  - name: neovim
+    make:
+      chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
+      params:
+        CMAKE_BUILD_TYPE: "RelWithDebInfo"
+
+  - name: neovim install
+    become: true
+    make:
+      target: install
+      chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/personal/neovim"
