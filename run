@@ -9,7 +9,7 @@ while [[ $# > 0 ]]; do
   if [[ $1 == "--dry" ]]; then
     dry="1"
   else
-    fliter="$1"
+    filter="$1"
   fi
 
   shift

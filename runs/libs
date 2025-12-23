@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# ZSH
+sudo apt install zsh
+sudo chsh -s $(which zsh)
+
+# OH MY ZSH
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # FZF
-git clone git@github.com:junegunn/fzf.git $HOME/personal/fzf
+git clone https://github.com/junegunn/fzf.git $HOME/personal/fzf
 $HOME/personal/fzf/install

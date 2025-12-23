@@ -57,7 +57,7 @@ copy_file () {
 log $XDG_CONFIG_HOME
 # execute mkdir $HOME/.config
 # TODO: Fix the issue with the config path
-execute export XDG_CONFIG_HOME="$HOME/.config"
+# execute export XDG_CONFIG_HOME="$HOME/.config"
 
 # Copy configurations from dev-env to OS Configs
 copy_dir .config $XDG_CONFIG_HOME
