@@ -1,0 +1,4 @@
+git clone https://github.com/tghimanshu/kickstart.nvim.git ~/personal/kickstart.nvim
+
+mkdir -p  $XDG_CONFIG_HOME/nvim/kickstart.nvim
+sudo cp -r ~/personal/kickstart.nvim $XDG_CONFIG_HOME/nvim/kickstart.nvim

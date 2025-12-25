@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt-get install ninja-build gettext cmake unzip curl build-essential
+sudo apt-get install ninja-build gettext cmake curl build-essential git
 
 git clone -b stable https://github.com/neovim/neovim.git ~/personal/neovim
 cd ~/personal/neovim
