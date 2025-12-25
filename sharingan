@@ -12,17 +12,33 @@ NC='\e[0m' # No Color
 # %b tells printf to interpret "backslash escapes." This is often necessary to make sure the colors actually render correctly inside the variable.
 # Loop through all the fiels in the ~/personal folder
 PROJECTS=$(find $HOME/personal/ -maxdepth 1 -mindepth 1 -type d)
+
+# TODO: Add an option to hide pushed folder
+# TODO: Add an option show non git folder list too
+
+# Header
 echo "-------------------------------------------------------"
 printf "| $BOLD%-15s$NC | $BOLD%-15s$NC | $BOLD%-15s$NC |\n"  "REPOSITORY" "BRANCH" "STATUS"
 echo "-------------------------------------------------------"
+
 for project in $PROJECTS; do
 	pushd $project > /dev/null
 		if [[ -d .git ]]; then
 			branch=$(git rev-parse --abbrev-ref HEAD)
 			status=$(git status --short)
+			local=$(git rev-parse HEAD 2>/dev/null)
+			remote=$(git rev-parse @{u} 2>/dev/null)
 			# use -z to check for it being Zero Lenght and -n for Non Zero Length
 			if [[ -n $status ]]; then
 				printf "| %-15s | %-15s | $RED%-15s$NC |\n" "$(basename $project)" "$branch" "Modified"
+			fi
+			
+			if [[ -z $remote ]]; then
+				printf "| %-15s | %-15s | $RED%-15s$NC |\n" "$(basename $project)" "$branch" "No Remote"
+			elif [[ $local = $remote ]]; then
+				printf "| %-15s | %-15s | $GREEN%-15s$NC |\n" "$(basename $project)" "$branch" "Pushed"
+			else
+				printf "| %-15s | %-15s | $GREEN%-15s$NC |\n" "$(basename $project)" "$branch" "UnPushed"
 			fi
 		fi 
 	popd > /dev/null
