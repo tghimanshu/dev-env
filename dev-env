@@ -63,13 +63,7 @@ log $XDG_CONFIG_HOME
 copy_dir .config $XDG_CONFIG_HOME
 copy_dir .local $XDG_CONFIG_HOME
 
-
-
-
-
-
-
-
-
+rm -rf $XDG_CONFIG_HOME/nvim
+cp -r ~/personal/kickstart.nvim $XDG_CONFIG_HOME/nvim
 
 
