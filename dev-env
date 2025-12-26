@@ -75,7 +75,7 @@ add_config () {
 
 # TODO: This is to update neovim config
 execute rm -rf $HOME/.cofig/nvim
-execute rsync -lrv --exclude .git ~/personal/kickstart.nvim $HOME/.config/nvim
+execute rsync -lrv --exclude .git ~/personal/kickstart.nvim/* $HOME/.config/nvim
 
 
 # TODO: This is to update tmux config
@@ -106,3 +106,10 @@ add_config "export XDG_STATE_HOME=\$HOME/.local/state"
 
 add_config "alias vi=nvim"
 add_config "set -o vi"
+
+if [[ -f $HOME/.bashrc ]]; then
+	execute source $HOME/.bashrc
+fi
+if [[ -f $HOME/.zshrc ]]; then
+	execute source $HOME/.zshrc
+fi
