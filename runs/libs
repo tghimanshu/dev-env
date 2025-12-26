@@ -10,3 +10,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # FZF
 git clone https://github.com/junegunn/fzf.git $HOME/personal/fzf
 $HOME/personal/fzf/install
+
+# Rust + Cargo
+curl https://sh.rustup.rs -sSf | sh

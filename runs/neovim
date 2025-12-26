@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-# sudo apt-get install ninja-build gettext cmake curl build-essential git
+sudo apt install ninja-build gettext cmake curl build-essential git
 
-# git clone -b stable https://github.com/neovim/neovim.git ~/personal/neovim
-# cd ~/personal/neovim
-#
-# make CMAKE_BUILD_TYPE=RelWithDebInfo
-# sudo make install
-#
+git clone -b v0.11.5 https://github.com/neovim/neovim.git ~/personal/neovim
+cd ~/personal/neovim
+
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
+
 # Installing NEOVIM
 
-sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt update
-sudo apt install neovim
+# sudo add-apt-repository ppa:neovim-ppa/unstable
+# sudo apt update
+# sudo apt install neovim
