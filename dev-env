@@ -29,7 +29,6 @@ execute () {
   "$@"
 }
 
-log "------------------ DEV ENV ------------------"
 
 copy_dir () {
   from="$1"
@@ -63,6 +62,17 @@ add_config () {
   
 }
 
+add_to_path () {
+  if [[ -f $HOME/.zshrc ]]; then
+    execute grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH;$@" >> ~/.zshrc
+  fi
+  if [[ -f $HOME/.bashrc ]]; then
+    execute grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH;$@" >> ~/.bashrc
+  fi
+}
+
+log "------------------ DEV ENV ------------------"
+
 # Note: WSL 2 Does have XDG_CONFIG HOME so run uncomment this if that's the case
 # log $XDG_CONFIG_HOME
 # execute mkdir $HOME/.config
@@ -70,34 +80,20 @@ add_config () {
 # execute export XDG_CONFIG_HOME="$HOME/.config"
 
 # Copy configurations from dev-env to OS Configs
-# copy_dir .config $XDG_CONFIG_HOME
-# copy_dir .local $XDG_CONFIG_HOME
+# copy_dir .config $HOME/.config/
+# copy_dir .local $HOME/.config/
 
 # TODO: This is to update neovim config
 execute rm -rf $HOME/.cofig/nvim
 execute rsync -lrv --exclude .git ~/personal/kickstart.nvim/* $HOME/.config/nvim
 
-
 # TODO: This is to update tmux config
 execute rm -rf $HOME/.cofig/tmux
 execute cp -r .config/tmux $HOME/.config/tmux
 
-if [[ -f ~/.bashrc ]]; then
-  execute grep "export XDG_CONFIG_HOME=\$HOME/.config" ~/.bashrc || echo "export XDG_CONFIG_HOME=\$HOME/.config" >> ~/.bashrc
-  execute grep "export XDG_CACHE_HOME=\$HOME/.cache" ~/.bashrc || echo "export XDG_CACHE_HOME=\$HOME/.cache" >> ~/.bashrc
-  execute grep "export XDG_DATA_HOME=\$HOME/.local/share" ~/.bashrc || echo "export XDG_DATA_HOME=\$HOME/.local/share" >> ~/.bashrc
-  execute grep "export XDG_STATE_HOME=\$HOME/.local/state" ~/.bashrc || echo "export XDG_STATE_HOME=\$HOME/.local/state" >> ~/.bashrc
-
-  execute grep "alias vi=nvim" ~/.bashrc || echo "alias vi=nvim" >> ~/.bashrc
-fi
-if [[ -f ~/.zshrc ]]; then
-  execute grep "export XDG_CONFIG_HOME=\$HOME/.config" ~/.zshrc || echo "export XDG_CONFIG_HOME=\$HOME/.config" >> ~/.zshrc
-  execute grep "export XDG_CACHE_HOME=\$HOME/.cache" ~/.zshrc || echo "export XDG_CACHE_HOME=\$HOME/.cache" >> ~/.zshrc
-  execute grep "export XDG_DATA_HOME=\$HOME/.local/share" ~/.zshrc || echo "export XDG_DATA_HOME=\$HOME/.local/share" >> ~/.zshrc
-  execute grep "export XDG_STATE_HOME=\$HOME/.local/state" ~/.zshrc || echo "export XDG_STATE_HOME=\$HOME/.local/state" >> ~/.zshrc
-
-  execute grep "alias vi=nvim" ~/.zshrc || echo "alias vi=nvim" >> ~/.zshrc
-fi
+# TODO: This is to update .local config
+execute rm -rf $HOME/.local/scripts
+execute cp -r .local/scripts $HOME/.local/scripts
 
 add_config "export XDG_CONFIG_HOME=\$HOME/.config"
 add_config "export XDG_CACHE_HOME=\$HOME/.cache"
@@ -106,6 +102,8 @@ add_config "export XDG_STATE_HOME=\$HOME/.local/state"
 
 add_config "alias vi=nvim"
 add_config "set -o vi"
+
+add_to_path "\$HOME/.local/scripts/"
 
 if [[ -n "$BASH_VERSION" ]]; then
 	execute source $HOME/.bashrc

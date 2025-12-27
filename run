@@ -46,4 +46,4 @@ for script in $scripts; do
   execute ./$script
 done
 
-execute ./dev-env
+# execute ./dev-env
