@@ -64,10 +64,10 @@ add_config () {
 
 add_to_path () {
   if [[ -f $HOME/.zshrc ]]; then
-    execute grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH;$@" >> ~/.zshrc
+    execute grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH:$@" >> ~/.zshrc
   fi
   if [[ -f $HOME/.bashrc ]]; then
-    execute grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH;$@" >> ~/.bashrc
+    execute grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH:$@" >> ~/.bashrc
   fi
 }
 
@@ -104,6 +104,7 @@ add_config "alias vi=nvim"
 add_config "set -o vi"
 
 add_to_path "\$HOME/.local/scripts/"
+add_to_path "\$HOME/personal/dev-env/"
 
 if [[ -n "$BASH_VERSION" ]]; then
 	execute source $HOME/.bashrc
