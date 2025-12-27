@@ -2,6 +2,17 @@
 
 sudo apt install ninja-build gettext cmake curl build-essential git
 
+# NOTE: Ripgrep for telescope grep search
+sudo apt install ripgrep
+
+# NOTE:  Tools to enable image.nvim in neotree.nvim
+# for magick_cli
+sudo apt install imagemagick
+# for magick_rock
+sudo apt install libmagickwand-dev
+# for luarocks
+sudo apt install luarocks
+
 git clone -b v0.11.5 https://github.com/neovim/neovim.git ~/personal/neovim
 cd ~/personal/neovim
 
@@ -10,6 +21,9 @@ sudo make install
 
 # Installing NEOVIM
 
+# NOTE: If you don't prefer direct installation over building from source
+#
 # sudo add-apt-repository ppa:neovim-ppa/unstable
 # sudo apt update
 # sudo apt install neovim
+#

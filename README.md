@@ -6,8 +6,6 @@ The ansible workflow works to build neovim from source
 
 Ref: (https://frontendmasters.github.io/dev-prod-2/lessons/your-env/ansible)
 
-
-
 ## Extras
 
 `Ctrl+X Ctrl+F` -> Expands file path in neovim
