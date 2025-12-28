@@ -13,8 +13,10 @@ switch_to() {
         tmux switch-client -t $selected_name
     fi
 
-    tmux send-keys -t $selected_name "ready-tmux"
-    tmux send-keys -t $selected_name "welcome to fem"
+    # NOTE: Ctrl + V (puts u into control signal mode) and Ctrl + M (puts the enter signal)
+    # So the final one should be ctrl+v ctrl+m
+    # tmux send-keys -t $selected_name "ready-tmux"
+    #     tmux send-keys -t $selected_name "welcome to fem"
 }
 
 if tmux has-session -t="$selected_name"; then
@@ -23,4 +25,3 @@ else
     tmux new-session -ds $selected_name -c $selected
     switch_to
 fi
-

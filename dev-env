@@ -5,70 +5,69 @@ script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 dry="0"
 
 while [[ $# > 0 ]]; do
-  if [[ $1 == "--dry" ]]; then
-    dry="1"
-  fi
+    if [[ $1 == "--dry" ]]; then
+        dry="1"
+    fi
 
-  shift
+    shift
 done
 
-log () {
-  if [[ $dry == "1" ]]; then
-    echo "[DRY RUN]: $@"
-  else
-    echo "$@"
-  fi
+log() {
+    if [[ $dry == "1" ]]; then
+        echo "[DRY RUN]: $@"
+    else
+        echo "$@"
+    fi
 }
 
-execute () {
-  log "Execute $@"
-  if [[ $dry == "1" ]]; then
-    return
-  fi
+execute() {
+    log "Execute $@"
+    if [[ $dry == "1" ]]; then
+        return
+    fi
 
-  "$@"
+    "$@"
 }
 
+copy_dir() {
+    from="$1"
+    to="$2"
 
-copy_dir () {
-  from="$1"
-  to="$2"
-  
-  pushd $from > /dev/null
-  dirs=$(find . -mindepth 1 -maxdepth 1 -type d)
-  for dir in $dirs; do
-    execute rm -rf $to/$dir
-    execute cp -r $dir $to/$dir
-  done
-  popd > /dev/null
+    pushd $from >/dev/null
+    dirs=$(find . -mindepth 1 -maxdepth 1 -type d)
+    for dir in $dirs; do
+        execute rm -rf $to/$dir
+        execute cp -r $dir $to/$dir
+    done
+    popd >/dev/null
 }
 
-copy_file () {
-  from="$1"
-  to="$2"
-  name=$(basename $from)
-  
-  execute rm $to/$name
-  execute cp $from $to/$name
+copy_file() {
+    from="$1"
+    to="$2"
+    name=$(basename $from)
+
+    execute rm $to/$name
+    execute cp $from $to/$name
 }
 
-add_config () {
-  if [[ -f $HOME/.zshrc ]]; then
-    execute grep "$@" ~/.zshrc || echo "$@" >> ~/.zshrc
-  fi
-  if [[ -f $HOME/.bashrc ]]; then
-    execute grep "$@" ~/.bashrc || echo "$@" >> ~/.bashrc
-  fi
-  
+add_config() {
+    if [[ -f $HOME/.zshrc ]]; then
+        execute grep "$@" ~/.zshrc || echo "$@" >>~/.zshrc
+    fi
+    if [[ -f $HOME/.bashrc ]]; then
+        execute grep "$@" ~/.bashrc || echo "$@" >>~/.bashrc
+    fi
+
 }
 
-add_to_path () {
-  if [[ -f $HOME/.zshrc ]]; then
-    execute grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH:$@" >> ~/.zshrc
-  fi
-  if [[ -f $HOME/.bashrc ]]; then
-    execute grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH:$@" >> ~/.bashrc
-  fi
+add_to_path() {
+    if [[ -f $HOME/.zshrc ]]; then
+        execute grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH:$@" >>~/.zshrc
+    fi
+    if [[ -f $HOME/.bashrc ]]; then
+        execute grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH:$@" >>~/.bashrc
+    fi
 }
 
 log "------------------ DEV ENV ------------------"
@@ -88,8 +87,8 @@ execute rm -rf $HOME/.cofig/nvim
 execute rsync -lrv --exclude .git ~/personal/kickstart.nvim/* $HOME/.config/nvim
 
 # TODO: This is to update tmux config
-execute rm -rf $HOME/.cofig/tmux
-execute cp -r .config/tmux $HOME/.config/tmux
+execute rm $HOME/.cofig/tmux/tmux.conf
+execute cp ./.config/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 
 # TODO: This is to update .local config
 execute rm -rf $HOME/.local/scripts
@@ -100,15 +99,25 @@ add_config "export XDG_CACHE_HOME=\$HOME/.cache"
 add_config "export XDG_DATA_HOME=\$HOME/.local/share"
 add_config "export XDG_STATE_HOME=\$HOME/.local/state"
 
+add_config "export FZF_DEFAULT_OPTS=--reverse"
+
 add_config "alias vi=nvim"
 add_config "set -o vi"
 
 add_to_path "\$HOME/.local/scripts/"
 add_to_path "\$HOME/personal/dev-env/"
 
+# NOTE: Special command for setting up ctrl f in zsh and bash
+if [[ -f $HOME/.zshrc ]]; then
+    execute grep "bindkey -s '^f' 'tmux-sessionizer\n'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer\n'" >>~/.zshrc
+fi
+if [[ -f $HOME/.bashrc ]]; then
+    execute grep "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" >>~/.bashrc
+fi
+
 if [[ -n "$BASH_VERSION" ]]; then
-	execute source $HOME/.bashrc
+    execute source $HOME/.bashrc
 fi
 if [[ -n "$ZSH_NAME" ]]; then
-	execute source $HOME/.zshrc
+    execute source $HOME/.zshrc
 fi
