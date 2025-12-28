@@ -9,3 +9,7 @@ Ref: (https://frontendmasters.github.io/dev-prod-2/lessons/your-env/ansible)
 ## Extras
 
 `Ctrl+X Ctrl+F` -> Expands file path in neovim
+
+## Tmux
+
+| After Installing tmux plugin manager please use prefix + I (ctrl+a I) to install tpm
