@@ -1,6 +1,38 @@
 # Dev Setup
 
-## Ansible Based Workflow
+## Setup Process
+
+### Cloning the Repo
+
+Note: This is currently configured to work best with an ubuntu system (apt)
+
+```bash
+mkdir ~/personal
+cd ~/personal
+git clone https://github.com/tghimanshu/dev-env.git
+```
+
+### Installing all the libararies
+
+```bash
+./run
+./run neovim # Use the second parameter as a way to fuzzy install files from the rusn folder
+```
+
+### Updating the Configs
+
+```bash
+mkdir ~/.config # Optional
+./dev-env
+```
+
+| You should have a working neovim, tmux and fzf. Enjoy!
+
+| Start by pressing `Ctrl + f` to start exploring all the capabilities
+
+###
+
+## Ansible Based Workflow (Deprecated)
 
 The ansible workflow works to build neovim from source
 
