@@ -100,6 +100,9 @@ add_config "export XDG_DATA_HOME=\$HOME/.local/share"
 add_config "export XDG_STATE_HOME=\$HOME/.local/state"
 
 add_config "export FZF_DEFAULT_OPTS=--reverse"
+add_config "export TERM=xterm-256color"
+add_config "export LC_ALL=en_US.UTF-8"
+add_config "export LANG=en_US.UTF-8"
 
 add_config "alias vi=nvim"
 add_config "set -o vi"
