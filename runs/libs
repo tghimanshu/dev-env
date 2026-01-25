@@ -29,3 +29,5 @@ sudo apt install python3-venv
 if [[ -f /etc/wsl.conf ]]; then
     sudo apt install wslu
 fi
+
+curl -sS https://raw.githubusercontent.com/kriuchkov/tock/master/install.sh | sh
