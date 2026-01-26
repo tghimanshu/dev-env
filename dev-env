@@ -111,12 +111,8 @@ add_to_path "\$HOME/.local/scripts/"
 add_to_path "\$HOME/personal/dev-env/"
 
 # NOTE: Special command for setting up ctrl f in zsh and bash
-if [[ -f $HOME/.zshrc ]]; then
-    execute grep "bindkey -s '^f' 'tmux-sessionizer\n'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer\n'" >>~/.zshrc
-fi
-if [[ -f $HOME/.bashrc ]]; then
-    execute grep "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" >>~/.bashrc
-fi
+add_config "bindkey -s '^f' 'tmux-sessionizer\n'"
+# execute grep "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" >>~/.bashrc
 
 if [[ -n "$BASH_VERSION" ]]; then
     execute source $HOME/.bashrc
