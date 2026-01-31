@@ -31,3 +31,5 @@ if [[ -f /etc/wsl.conf ]]; then
 fi
 
 curl -sS https://raw.githubusercontent.com/kriuchkov/tock/master/install.sh | sh
+
+sudo install lazygit
