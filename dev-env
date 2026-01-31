@@ -100,7 +100,7 @@ add_config "export XDG_DATA_HOME=\$HOME/.local/share"
 add_config "export XDG_STATE_HOME=\$HOME/.local/state"
 
 add_config "export FZF_DEFAULT_OPTS=--reverse"
-add_config "export TERM=xterm-256color"
+# add_config "export TERM=xterm-256color"
 add_config "export LC_ALL=en_US.UTF-8"
 add_config "export LANG=en_US.UTF-8"
 
@@ -111,7 +111,7 @@ add_to_path "\$HOME/.local/scripts/"
 add_to_path "\$HOME/personal/dev-env/"
 
 # NOTE: Special command for setting up ctrl f in zsh and bash
-add_config "bindkey -s '^f' 'tmux-sessionizer\n'"
+add_config "bindkey -s '^f' 'tmux-sessionizer^M'"
 # execute grep "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\n\"'" >>~/.bashrc
 
 if [[ -n "$BASH_VERSION" ]]; then
