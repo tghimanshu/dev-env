@@ -45,3 +45,15 @@ Ref: (https://frontendmasters.github.io/dev-prod-2/lessons/your-env/ansible)
 ## Tmux
 
 | After Installing tmux plugin manager please use prefix + I (ctrl+a I) to install tpm
+
+## Upgrading Ubuntu
+
+```
+sudo vi /etc/update-manager/release-upgrades
+```
+update Prompt to `normal` or `lts`
+
+```
+sudo apt update && sudo apt full-upgrade -y
+sudo do-release-upgrade
+```
