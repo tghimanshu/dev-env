@@ -30,6 +30,11 @@ if [[ -f /etc/wsl.conf ]]; then
     sudo apt install wslu
 fi
 
+# Tock
 curl -sS https://raw.githubusercontent.com/kriuchkov/tock/master/install.sh | sh
 
+# Lazygit
 sudo install lazygit
+
+# OpenCode CLI
+curl -fsSL https://opencode.ai/install | bash
