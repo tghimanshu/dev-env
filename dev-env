@@ -107,6 +107,10 @@ add_config "export LANG=en_US.UTF-8"
 add_config "alias vi=nvim"
 add_config "set -o vi"
 
+add_config "source ~/.oh-my-zsh/custom/plugins/you-should-use/zsh-you-should-use.plugin.zsh"
+add_config "source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+add_config "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+
 add_to_path "\$HOME/.local/scripts/"
 add_to_path "\$HOME/personal/dev-env/"
 
