@@ -6,5 +6,6 @@
 . ./install-dotfiles.sh
 . ./install-lua.sh
 . ./install-rust.sh
+. ./install-rclone.sh
 
 . ./set-shell.sh
