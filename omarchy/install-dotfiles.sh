@@ -8,6 +8,25 @@ is_stow_installed() {
   pacman -Qi "stow" &> /dev/null
 }
 
+add_ctrl_f() {
+    if [[ -f $HOME/.zshrc ]]; then
+        grep "bindkey -s '^f' 'tmux-sessionizer^M'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
+    fi
+    if [[ -f $HOME/.bashrc ]]; then
+        grep "bind \"\\C-f\": \"tmux-sessionizer\n \" " ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
+    fi
+
+}
+add_to_path() {
+    if [[ -f $HOME/.zshrc ]]; then
+        grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH:$@" >>~/.zshrc
+    fi
+    if [[ -f $HOME/.bashrc ]]; then
+        grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH:$@" >>~/.bashrc
+    fi
+}
+
+
 if ! is_stow_installed; then
   echo "Install stow first"
   exit 1
@@ -44,6 +63,10 @@ if [ $? -eq 0 ]; then
   stow -t ~ tmux
   stow -t ~ nvim
   # stow starship
+  stow -t ~ local
+
+  add_to_path "$HOME/.local/scripts"
+  add_ctrl_f
 else
   echo "Failed to clone the repository."
   exit 1
