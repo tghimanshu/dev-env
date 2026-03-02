@@ -7,5 +7,6 @@
 . ./install-lua.sh
 . ./install-rust.sh
 . ./install-rclone.sh
+. ./install-oh-my-posh.sh
 
 . ./set-shell.sh

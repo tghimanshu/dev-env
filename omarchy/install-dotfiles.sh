@@ -62,6 +62,8 @@ if [ $? -eq 0 ]; then
   # stow ghostty
   stow -t ~ tmux
   stow -t ~ nvim
+  stow -t ~ zsh
+  stow -t ~ ohmyposh
   # stow starship
   stow -t ~ local
 
