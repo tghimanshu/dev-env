@@ -1,3 +1,7 @@
-git clone https://github.com/tghimanshu/kickstart.nvim.git ~/personal/kickstart.nvim
+#!/usr/bin/env bash
 
-
+if [ ! -d "$HOME/personal/kickstart.nvim" ]; then
+    git clone https://github.com/tghimanshu/kickstart.nvim.git ~/personal/kickstart.nvim
+else
+    echo "kickstart.nvim already cloned, skipping"
+fi

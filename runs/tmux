@@ -1,4 +1,9 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 sudo apt install tmux
-git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux
+
+if [ ! -d "$HOME/.local/share/tmux" ]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux
+else
+    echo "TPM already cloned, skipping"
+fi

@@ -83,11 +83,11 @@ log "------------------ DEV ENV ------------------"
 # copy_dir .local $HOME/.config/
 
 # TODO: This is to update neovim config
-execute rm -rf $HOME/.cofig/nvim
+execute rm -rf $HOME/.config/nvim
 execute rsync -lrv --exclude .git ~/personal/kickstart.nvim/* $HOME/.config/nvim
 
 # TODO: This is to update tmux config
-execute rm $HOME/.cofig/tmux/tmux.conf
+execute rm $HOME/.config/tmux/tmux.conf
 execute cp ./.config/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 
 # TODO: This is to update .local config

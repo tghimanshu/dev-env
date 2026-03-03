@@ -13,7 +13,7 @@ add_ctrl_f() {
         grep "bindkey -s '^f' 'tmux-sessionizer^M'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
     fi
     if [[ -f $HOME/.bashrc ]]; then
-        grep "bind \"\\C-f\": \"tmux-sessionizer\n \" " ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
+        grep "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" >>~/.bashrc
     fi
 
 }
@@ -57,21 +57,26 @@ if [ $? -eq 0 ]; then
   mv ~/.config/nvim  ~/.config/backup/nvim.backup  2>/dev/null || true
   mv ~/.config/tmux  ~/.config/backup/tmux.backup  2>/dev/null || true
   mv ~/.config/wtf   ~/.config/backup/wtf.backup   2>/dev/null || true
-  mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
+  # glance backup disabled — keeping glance config in dotfiles for easy rollback
+  # mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
+  mv ~/.config/homepage ~/.config/backup/homepage.backup 2>/dev/null || true
+  mv ~/.config/glance   ~/.config/backup/glance.backup   2>/dev/null || true
 
   cd "$REPO_NAME"
   # stow zshrc
   # stow ghostty
-  stow -t ~ tmux
-  stow -t ~ nvim
-  stow -t ~ zsh
-  stow -t ~ ohmyposh
+  stow -R -t ~ tmux
+  stow -R -t ~ nvim
+  stow -R -t ~ zsh
+  stow -R -t ~ ohmyposh
   # stow starship
-  stow -t ~ local
-  stow -t ~ wtf
-  stow -t ~ taskwarrior
-  stow -t ~ glance
-  stow -t ~ notes
+  stow -R -t ~ local
+  stow -R -t ~ wtf
+  stow -R -t ~ taskwarrior
+  stow -R -t ~ startpage
+  # stow -R -t ~ glance     # disabled — replaced by custom HTML startpage (keep for rollback)
+  # stow -R -t ~ homepage   # disabled — keep for rollback
+  stow -R -t ~ notes
 
   add_to_path "$HOME/.local/scripts"
   add_ctrl_f

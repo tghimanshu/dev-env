@@ -14,6 +14,9 @@
 . ./install-taskwarrior.sh
 . ./install-wtf.sh
 . ./install-ollama.sh
-. ./install-glance.sh
+. ./install-startpage.sh
+# . ./install-glance.sh     # disabled — replaced by custom HTML startpage (keep for rollback)
+# . ./install-homepage.sh   # disabled — keep for rollback
+. ./install-lifeos.sh
 
 . ./set-shell.sh

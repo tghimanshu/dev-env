@@ -1,2 +1,3 @@
-print("Hello, from nvim's lua")
-require("~/personal/kickstart.nvim")
+-- Legacy stub from the old rsync-based dev-env setup.
+-- Neovim config is now managed via GNU Stow from ~/personal/dotfiles/nvim/.
+-- This file is no longer deployed anywhere — kept for historical reference only.
