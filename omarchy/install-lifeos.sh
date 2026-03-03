@@ -37,6 +37,9 @@ mkdir -p "$NOTES_DIR/daily"
 mkdir -p "$NOTES_DIR/projects"
 mkdir -p "$NOTES_DIR/learning"
 mkdir -p "$NOTES_DIR/templates"
+mkdir -p "$NOTES_DIR/dsa"
+mkdir -p "$NOTES_DIR/ai"
+mkdir -p "$NOTES_DIR/systems"
 
 # Create tasks.md only if it doesn't already exist
 if [ ! -f "$NOTES_DIR/tasks.md" ]; then
@@ -64,62 +67,10 @@ else
   echo "$NOTES_DIR/tasks.md already exists — skipping."
 fi
 
-# Create daily note template only if not present
-if [ ! -f "$NOTES_DIR/templates/daily.md" ]; then
-  cat > "$NOTES_DIR/templates/daily.md" << 'EOF'
-# {{date}}
-
-## Focus
-
-- 
-
-## Done
-
-- [ ] 
-
-## Notes
-
-## Blockers
-
-EOF
-  echo "Created $NOTES_DIR/templates/daily.md"
-fi
-
-# Create project template only if not present
-if [ ! -f "$NOTES_DIR/templates/project.md" ]; then
-  cat > "$NOTES_DIR/templates/project.md" << 'EOF'
-# Project: {{name}}
-
-## Goal
-
-## Tasks
-
-- [ ] 
-
-## Notes
-
-## Links
-
-EOF
-  echo "Created $NOTES_DIR/templates/project.md"
-fi
-
-# Create learning template only if not present
-if [ ! -f "$NOTES_DIR/templates/learning.md" ]; then
-  cat > "$NOTES_DIR/templates/learning.md" << 'EOF'
-# {{topic}}
-
-## Summary
-
-## Key Concepts
-
-## Examples
-
-## Resources
-
-EOF
-  echo "Created $NOTES_DIR/templates/learning.md"
-fi
+# Templates are managed by the dotfiles stow package (dotfiles/notes/).
+# Stow places daily_template.md, project_template.md, learning_template.md,
+# and weekly_review_template.md into ~/personal/notes/templates/.
+# No templates are created here to avoid naming conflicts.
 
 echo "Notes structure ready at $NOTES_DIR"
 

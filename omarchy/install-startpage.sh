@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # install-startpage.sh
 # Serves the custom HTML startpage at http://localhost:4000 as a systemd user service.
 # Idempotent: safe to run multiple times.
@@ -50,12 +50,11 @@ if command -v docker > /dev/null 2>&1; then
   fi
 fi
 
-# ── 2. Write systemd user service ─────────────────────────────────────────────
+# ── 2. Write systemd user service (only if content changed) ───────────────────
 
 mkdir -p "$HOME/.config/systemd/user"
 
-cat > "$SERVICE_FILE" << EOF
-[Unit]
+DESIRED_SERVICE="[Unit]
 Description=LifeOS Startpage — custom HTML dashboard served on port 4000
 After=network.target
 
@@ -66,16 +65,32 @@ Restart=on-failure
 RestartSec=3
 
 [Install]
-WantedBy=default.target
-EOF
+WantedBy=default.target"
 
-echo "Wrote $SERVICE_FILE"
+if [ ! -f "$SERVICE_FILE" ] || [ "$DESIRED_SERVICE" != "$(cat "$SERVICE_FILE")" ]; then
+  printf '%s\n' "$DESIRED_SERVICE" > "$SERVICE_FILE"
+  echo "Wrote $SERVICE_FILE"
+  SERVICE_CHANGED=true
+else
+  echo "Service file unchanged — skipping write."
+  SERVICE_CHANGED=false
+fi
 
 # ── 3. Enable and (re)start the service ────────────────────────────────────────
 
-systemctl --user daemon-reload
-systemctl --user enable  "$SERVICE_NAME"
-systemctl --user restart "$SERVICE_NAME"
+systemctl --user enable "$SERVICE_NAME"
+
+if [ "$SERVICE_CHANGED" = true ]; then
+  systemctl --user daemon-reload
+  systemctl --user restart "$SERVICE_NAME"
+else
+  # Ensure it's running in case it was stopped, but don't restart if healthy
+  if ! systemctl --user is-active --quiet "$SERVICE_NAME"; then
+    systemctl --user start "$SERVICE_NAME"
+  else
+    echo "Service already running — skipping restart."
+  fi
+fi
 
 sleep 1
 

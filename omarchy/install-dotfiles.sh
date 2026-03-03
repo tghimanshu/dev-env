@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-ORIGINAL_DIR=$(pwd)
 REPO_URL="git@github.com:tghimanshu/dotfiles.git"
 REPO_NAME="$HOME/personal/dotfiles/"
 
@@ -10,19 +9,19 @@ is_stow_installed() {
 
 add_ctrl_f() {
     if [[ -f $HOME/.zshrc ]]; then
-        grep "bindkey -s '^f' 'tmux-sessionizer^M'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
+        grep -qF "bindkey -s '^f' 'tmux-sessionizer^M'" ~/.zshrc || echo "bindkey -s '^f' 'tmux-sessionizer^M'" >>~/.zshrc
     fi
     if [[ -f $HOME/.bashrc ]]; then
-        grep "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" >>~/.bashrc
+        grep -qF "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" ~/.bashrc || echo "bind '\"\\C-f\":\"tmux-sessionizer\\n\"'" >>~/.bashrc
     fi
 
 }
 add_to_path() {
     if [[ -f $HOME/.zshrc ]]; then
-        grep "export PATH=\$PATH:$@" ~/.zshrc || echo "export PATH=\$PATH:$@" >>~/.zshrc
+        grep -qF "export PATH=\$PATH:$1" ~/.zshrc || echo "export PATH=\$PATH:$1" >>~/.zshrc
     fi
     if [[ -f $HOME/.bashrc ]]; then
-        grep "export PATH=\$PATH:$@" ~/.bashrc || echo "export PATH=\$PATH:$@" >>~/.bashrc
+        grep -qF "export PATH=\$PATH:$1" ~/.bashrc || echo "export PATH=\$PATH:$1" >>~/.bashrc
     fi
 }
 
@@ -49,8 +48,8 @@ else
     git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux
 fi
 
-# Check if the clone was successful
-if [ $? -eq 0 ]; then
+# Proceed if the repo is present (cloned above or already existed)
+if [ -d "$REPO_NAME" ]; then
   echo "removing old configs"
   # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
   mkdir -p ~/.config/backup/
@@ -60,7 +59,6 @@ if [ $? -eq 0 ]; then
   # glance backup disabled — keeping glance config in dotfiles for easy rollback
   # mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
   mv ~/.config/homepage ~/.config/backup/homepage.backup 2>/dev/null || true
-  mv ~/.config/glance   ~/.config/backup/glance.backup   2>/dev/null || true
 
   cd "$REPO_NAME"
   # stow zshrc
@@ -89,6 +87,17 @@ if [ $? -eq 0 ]; then
   if [[ -f $HOME/.bashrc ]]; then
     grep -qF "$ALIAS_LINE" ~/.bashrc || echo "$ALIAS_LINE" >> ~/.bashrc
   fi
+
+  # Taskwarrior reads ~/.taskrc by default — symlink to the stowed config
+  TASKRC_LINK="$HOME/.taskrc"
+  TASKRC_TARGET="$HOME/.config/taskwarrior/.taskrc"
+  if [ ! -e "$TASKRC_LINK" ]; then
+    ln -sf "$TASKRC_TARGET" "$TASKRC_LINK"
+    echo "Linked ~/.taskrc → ~/.config/taskwarrior/.taskrc"
+  else
+    echo "~/.taskrc already exists — skipping symlink."
+  fi
+
 else
   echo "Failed to clone the repository."
   exit 1

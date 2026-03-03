@@ -20,7 +20,7 @@ Everything in this setup is version-controlled across two repos:
 │   ├── wtf/                    → ~/.config/wtf/
 │   ├── taskwarrior/            → ~/.config/taskwarrior/
 │   ├── startpage/              → startpage served via systemd on :4000
-│   ├── notes/                  → ~/.local/share/notes/
+│   ├── notes/                  → ~/personal/notes/
 │   ├── ohmyposh/               → ~/.config/ohmyposh/
 │   ├── glance/                 → ~/.config/glance/  (disabled — keep for rollback)
 │   ├── homepage/               → ~/.config/homepage/ (disabled — keep for rollback)
@@ -97,7 +97,7 @@ nvim                          # open dashboard — check new buttons + quote foo
 
 **Notes vault structure (stowed from `dotfiles/notes/`):**
 ```
-~/.local/share/notes/
+~/personal/notes/
 ├── daily/       ← daily notes (one per day)
 ├── projects/    ← one note per project
 ├── learning/    ← one note per topic
@@ -107,8 +107,7 @@ nvim                          # open dashboard — check new buttons + quote foo
 └── templates/   ← daily_template.md, project_template.md, learning_template.md
 ```
 
-> ⚠️ Point obsidian.nvim workspace path to `~/.local/share/notes` in `obsidian.lua`
-> (currently set to `~/notes` — update to match where you stow)
+> Note: obsidian.nvim workspace path should point to `~/personal/notes` in `obsidian.lua`
 
 ---
 
@@ -242,15 +241,15 @@ sh ~/personal/dev-env/omarchy/install-startpage.sh
 xdg-open http://localhost:4000
 
 # Check service status
-systemctl --user status startpage
+systemctl --user status lifeos-startpage
 
 # Restart
-systemctl --user restart startpage
+systemctl --user restart lifeos-startpage
 ```
 
 **Rollback to Glance:**
 ```bash
-systemctl --user stop startpage
+systemctl --user stop lifeos-startpage
 cd ~/personal/dotfiles
 stow -R -t ~ glance
 sh ~/personal/dev-env/omarchy/install-glance.sh
