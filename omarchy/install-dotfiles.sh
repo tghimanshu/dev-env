@@ -54,8 +54,10 @@ if [ $? -eq 0 ]; then
   echo "removing old configs"
   # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
   mkdir -p ~/.config/backup/
-  mv ~/.config/nvim ~/.config/backup/nvim.backup
-  mv ~/.config/tmux ~/.config/backup/tmux.backup
+  mv ~/.config/nvim  ~/.config/backup/nvim.backup  2>/dev/null || true
+  mv ~/.config/tmux  ~/.config/backup/tmux.backup  2>/dev/null || true
+  mv ~/.config/wtf   ~/.config/backup/wtf.backup   2>/dev/null || true
+  mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
 
   cd "$REPO_NAME"
   # stow zshrc
@@ -66,9 +68,22 @@ if [ $? -eq 0 ]; then
   stow -t ~ ohmyposh
   # stow starship
   stow -t ~ local
+  stow -t ~ wtf
+  stow -t ~ taskwarrior
+  stow -t ~ glance
+  stow -t ~ notes
 
   add_to_path "$HOME/.local/scripts"
   add_ctrl_f
+
+  # Source taskwarrior aliases into shell
+  ALIAS_LINE="source \$HOME/.config/taskwarrior/taskrc_aliases.sh"
+  if [[ -f $HOME/.zshrc ]]; then
+    grep -qF "$ALIAS_LINE" ~/.zshrc || echo "$ALIAS_LINE" >> ~/.zshrc
+  fi
+  if [[ -f $HOME/.bashrc ]]; then
+    grep -qF "$ALIAS_LINE" ~/.bashrc || echo "$ALIAS_LINE" >> ~/.bashrc
+  fi
 else
   echo "Failed to clone the repository."
   exit 1
