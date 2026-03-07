@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # install-ollama.sh
 # Installs Ollama (local LLM runner) and Open WebUI (browser interface)
 # Idempotent: checks before installing/pulling

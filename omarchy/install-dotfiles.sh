@@ -40,12 +40,14 @@ else
   git clone "$REPO_URL" $REPO_NAME
 fi
 
-# Install TPM (TMUX)
-if [ -d "$HOME/.local/share/tmux" ]; then
-    echo "Repository '' already exists, Skipping clone"
+# Install TPM (TMUX Plugin Manager)
+# Correct target is ~/.local/share/tmux/plugins/tpm — not ~/.local/share/tmux
+TPM_DIR="$HOME/.local/share/tmux/plugins/tpm"
+if [ -d "$TPM_DIR" ]; then
+    echo "TPM already installed at $TPM_DIR — skipping clone."
 else
-    mkdir ~/.local/share/tmux
-    git clone https://github.com/tmux-plugins/tpm ~/.local/share/tmux
+    mkdir -p "$(dirname "$TPM_DIR")"
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
 fi
 
 # Proceed if the repo is present (cloned above or already existed)
@@ -53,15 +55,16 @@ if [ -d "$REPO_NAME" ]; then
   echo "removing old configs"
   # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
   mkdir -p ~/.config/backup/
-  mv ~/.config/nvim    ~/.config/backup/nvim.backup    2>/dev/null || true
-  mv ~/.config/tmux    ~/.config/backup/tmux.backup    2>/dev/null || true
-  mv ~/.config/wtf     ~/.config/backup/wtf.backup     2>/dev/null || true
-  mv ~/.config/hypr    ~/.config/backup/hypr.backup    2>/dev/null || true
-  mv ~/.config/waybar  ~/.config/backup/waybar.backup  2>/dev/null || true
-  mv ~/.gitconfig      ~/.config/backup/gitconfig.backup 2>/dev/null || true
+  # Only back up real directories/files — skip if already a stow symlink (idempotent on re-run)
+  { [ -e ~/.config/nvim ]     && [ ! -L ~/.config/nvim ]     && mv ~/.config/nvim     ~/.config/backup/nvim.backup; } 2>/dev/null || true
+  { [ -e ~/.config/tmux ]     && [ ! -L ~/.config/tmux ]     && mv ~/.config/tmux     ~/.config/backup/tmux.backup; } 2>/dev/null || true
+  { [ -e ~/.config/wtf ]      && [ ! -L ~/.config/wtf ]      && mv ~/.config/wtf      ~/.config/backup/wtf.backup; }  2>/dev/null || true
+  { [ -e ~/.config/hypr ]     && [ ! -L ~/.config/hypr ]     && mv ~/.config/hypr     ~/.config/backup/hypr.backup; } 2>/dev/null || true
+  { [ -e ~/.config/waybar ]   && [ ! -L ~/.config/waybar ]   && mv ~/.config/waybar   ~/.config/backup/waybar.backup; } 2>/dev/null || true
+  { [ -e ~/.gitconfig ]       && [ ! -L ~/.gitconfig ]       && mv ~/.gitconfig       ~/.config/backup/gitconfig.backup; } 2>/dev/null || true
   # glance backup disabled — keeping glance config in dotfiles for easy rollback
-  # mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
-  mv ~/.config/homepage ~/.config/backup/homepage.backup 2>/dev/null || true
+  # { [ -e ~/.config/glance ] && [ ! -L ~/.config/glance ] && mv ~/.config/glance ~/.config/backup/glance.backup; } 2>/dev/null || true
+  { [ -e ~/.config/homepage ] && [ ! -L ~/.config/homepage ] && mv ~/.config/homepage ~/.config/backup/homepage.backup; } 2>/dev/null || true
 
   cd "$REPO_NAME"
   # stow zshrc
@@ -94,14 +97,21 @@ if [ -d "$REPO_NAME" ]; then
     grep -qF "$ALIAS_LINE" ~/.bashrc || echo "$ALIAS_LINE" >> ~/.bashrc
   fi
 
-  # Taskwarrior reads ~/.taskrc by default — symlink to the stowed config
+  # Taskwarrior reads ~/.taskrc by default — symlink to the stowed config.
+  # Use -L to detect whether it's already a symlink (covers absent, broken-link,
+  # and regular-file cases). Force-recreate if it's not already a symlink so that
+  # broken symlinks from a previous partial run don't silently leave the wrong target.
   TASKRC_LINK="$HOME/.taskrc"
   TASKRC_TARGET="$HOME/.config/taskwarrior/.taskrc"
-  if [ ! -e "$TASKRC_LINK" ]; then
-    ln -sf "$TASKRC_TARGET" "$TASKRC_LINK"
-    echo "Linked ~/.taskrc → ~/.config/taskwarrior/.taskrc"
+  if [ -L "$TASKRC_LINK" ]; then
+    echo "~/.taskrc is already a symlink — skipping."
   else
-    echo "~/.taskrc already exists — skipping symlink."
+    if [ -e "$TASKRC_LINK" ]; then
+      echo "~/.taskrc exists as a real file — backing up and replacing with symlink."
+      mv "$TASKRC_LINK" "$TASKRC_LINK.backup"
+    fi
+    ln -sf "$TASKRC_TARGET" "$TASKRC_LINK"
+    echo "Linked ~/.taskrc → $TASKRC_TARGET"
   fi
 
 else

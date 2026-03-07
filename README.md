@@ -1,59 +1,75 @@
-# Dev Setup
+# Dev Environment — LifeOS Setup
 
-## Setup Process
+This repo contains idempotent install scripts for the LifeOS running on **Omarchy (Arch Linux + Hyprland)**.
+Every script is safe to re-run at any time — it will skip work that is already done.
 
-### Cloning the Repo
+## Prerequisites
 
-Note: This is currently configured to work best with an ubuntu system (apt)
+- Arch Linux / Omarchy installed
+- `yay` AUR helper available
+- SSH key added to GitHub (for dotfiles clone)
 
-```bash
-mkdir ~/personal
-cd ~/personal
-git clone https://github.com/tghimanshu/dev-env.git
-```
-
-### Installing all the libararies
+## Fresh Machine Setup
 
 ```bash
-./run
-./run neovim # Use the second parameter as a way to fuzzy install files from the rusn folder
+# 1. Clone this repo
+mkdir -p ~/personal
+git clone git@github.com:tghimanshu/dev-env.git ~/personal/dev-env
+
+# 2. Run everything in one shot
+cd ~/personal/dev-env/omarchy
+sh master.sh
 ```
 
-### Updating the Configs
+`master.sh` runs every `install-*.sh` script in order, then sets zsh as the default shell.
+Each script runs in its own subprocess — failures are isolated and don't affect subsequent steps.
+
+## What Gets Installed
+
+| Script | Installs / Configures |
+|---|---|
+| `install-ghostty.sh` | Ghostty terminal |
+| `install-stow.sh` | GNU Stow (dotfile manager) |
+| `install-zsh.sh` | Zsh shell |
+| `install-dotfiles.sh` | Clones dotfiles repo + stows all config packages |
+| `install-lua.sh` | Lua + luarocks + imagemagick |
+| `install-rust.sh` | Rust toolchain via rustup |
+| `install-rclone.sh` | rclone + systemd mount service for Google Drive |
+| `install-oh-my-posh.sh` | Oh My Posh prompt |
+| `install-dev-tools.sh` | lazygit, gh, clang, lldb, cmake, stylua, anki, node, npm |
+| `install-yazi.sh` | Yazi file manager + fd, ripgrep, fzf, zoxide |
+| `install-taskwarrior.sh` | task, timew, vit |
+| `install-wtf.sh` | wtfutil terminal dashboard |
+| `install-ollama.sh` | Ollama (local LLMs) + Open WebUI |
+| `install-startpage.sh` | Custom HTML startpage via systemd on :4000 |
+| `install-lifeos.sh` | Notes structure + Hyprland keybinds |
+| `set-shell.sh` | Sets zsh as default shell |
+
+## Re-running After Changes
 
 ```bash
-mkdir ~/.config # Optional
-./dev-env
+# Re-run a single script (idempotent — skips already-done work):
+bash ~/personal/dev-env/omarchy/install-dotfiles.sh
+
+# Re-run everything:
+cd ~/personal/dev-env/omarchy && sh master.sh
 ```
 
-| You should have a working neovim, tmux and fzf. Enjoy!
+## Dotfiles
 
-| Start by pressing `Ctrl + f` to start exploring all the capabilities
+Config files live in a separate repo: `~/personal/dotfiles/`
+They are managed with GNU Stow — see `install-dotfiles.sh` for what gets stowed.
 
-###
+## Key Keybindings (after setup)
 
-## Ansible Based Workflow (Deprecated)
+| Key | Action |
+|---|---|
+| `Ctrl+F` | Open tmux-sessionizer (project switcher) |
+| `SUPER+D` | Open LifeOS startpage (http://localhost:4000) |
+| `SUPER+SHIFT+T` | Open wtf terminal dashboard |
+| `<leader>nd` | Open today's daily note in Neovim |
 
-The ansible workflow works to build neovim from source
+## Legacy / Deprecated
 
-Ref: (https://frontendmasters.github.io/dev-prod-2/lessons/your-env/ansible)
-
-## Extras
-
-`Ctrl+X Ctrl+F` -> Expands file path in neovim
-
-## Tmux
-
-| After Installing tmux plugin manager please use prefix + I (ctrl+a I) to install tpm
-
-## Upgrading Ubuntu
-
-```
-sudo vi /etc/update-manager/release-upgrades
-```
-update Prompt to `normal` or `lts`
-
-```
-sudo apt update && sudo apt full-upgrade -y
-sudo do-release-upgrade
-```
+The `runs/` directory and `dev-env` script are from an older Ubuntu/apt-based workflow
+and are no longer used. The `omarchy/` scripts are the current standard.

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # install-wtf.sh
 # Installs wtfutil — modular terminal dashboard
 # Idempotent: --needed skips if already installed
