@@ -53,9 +53,12 @@ if [ -d "$REPO_NAME" ]; then
   echo "removing old configs"
   # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
   mkdir -p ~/.config/backup/
-  mv ~/.config/nvim  ~/.config/backup/nvim.backup  2>/dev/null || true
-  mv ~/.config/tmux  ~/.config/backup/tmux.backup  2>/dev/null || true
-  mv ~/.config/wtf   ~/.config/backup/wtf.backup   2>/dev/null || true
+  mv ~/.config/nvim    ~/.config/backup/nvim.backup    2>/dev/null || true
+  mv ~/.config/tmux    ~/.config/backup/tmux.backup    2>/dev/null || true
+  mv ~/.config/wtf     ~/.config/backup/wtf.backup     2>/dev/null || true
+  mv ~/.config/hypr    ~/.config/backup/hypr.backup    2>/dev/null || true
+  mv ~/.config/waybar  ~/.config/backup/waybar.backup  2>/dev/null || true
+  mv ~/.gitconfig      ~/.config/backup/gitconfig.backup 2>/dev/null || true
   # glance backup disabled — keeping glance config in dotfiles for easy rollback
   # mv ~/.config/glance ~/.config/backup/glance.backup 2>/dev/null || true
   mv ~/.config/homepage ~/.config/backup/homepage.backup 2>/dev/null || true
@@ -72,6 +75,9 @@ if [ -d "$REPO_NAME" ]; then
   stow -R -t ~ wtf
   stow -R -t ~ taskwarrior
   stow -R -t ~ startpage
+  stow -R -t ~ git
+  stow -R -t ~ hypr
+  stow -R -t ~ waybar
   # stow -R -t ~ glance     # disabled — replaced by custom HTML startpage (keep for rollback)
   # stow -R -t ~ homepage   # disabled — keep for rollback
   stow -R -t ~ notes
