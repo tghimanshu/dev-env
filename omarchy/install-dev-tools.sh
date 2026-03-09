@@ -3,6 +3,9 @@
 # Installs general developer CLI tools used across the whole setup
 # Idempotent: --needed skips if already installed
 
+# Install Google Chrome
+yay -S --noconfirm --needed google-chrome
+
 # Terminal multiplexer (already likely installed via tmux stow)
 yay -S --noconfirm --needed tmux
 
@@ -13,7 +16,7 @@ yay -S --noconfirm --needed python-virtualenv  # venv support
 
 # C / C++ toolchain (for clangd LSP + learning)
 yay -S --noconfirm --needed clang
-yay -S --noconfirm --needed lldb               # debugger (codelldb)
+# yay -S --noconfirm --needed lldb               # debugger (codelldb)
 yay -S --noconfirm --needed cmake
 yay -S --noconfirm --needed make
 
