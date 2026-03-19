@@ -2,17 +2,17 @@
 
 yay -S --noconfirm --needed rclone fuse3
 
-# If the drive: remote isn't configured yet, there's nothing to mount.
+# If the gdrive: remote isn't configured yet, there's nothing to mount.
 # Run 'rclone config' to set it up, then re-run this script.
-if ! rclone listremotes | grep -q '^drive:$'; then
-    echo "rclone remote 'drive' not configured — skipping mount setup."
-    echo "Run 'rclone config' to add a remote named 'drive', then re-run this script."
+if ! rclone listremotes | grep -q '^gdrive:$'; then
+    echo "rclone remote 'gdrive' not configured — skipping mount setup."
+    echo "Run 'rclone config' to add a remote named 'gdrive', then re-run this script."
     exit 0
 fi
 
 # Expand $HOME eagerly so the service file contains the real absolute path,
 # not the literal string "${HOME}" which systemd does not expand.
-DRIVE_DIR="${HOME}/drive"
+DRIVE_DIR="${HOME}/personal/gdrive"
 mkdir -p "$DRIVE_DIR"
 
 # --- systemd user service for startup mount ---
@@ -24,7 +24,7 @@ Wants=network-online.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/rclone mount drive: ${DRIVE_DIR} --vfs-cache-mode writes --log-level INFO
+ExecStart=/usr/bin/rclone mount gdrive: ${DRIVE_DIR} --vfs-cache-mode writes --log-level INFO
 ExecStop=/usr/bin/fusermount -u ${DRIVE_DIR}
 Restart=on-failure
 RestartSec=5
@@ -36,7 +36,7 @@ mkdir -p "$(dirname "$SERVICE_FILE")"
 
 if [ ! -f "$SERVICE_FILE" ] || [ "$DESIRED_SERVICE" != "$(cat "$SERVICE_FILE")" ]; then
     echo "Writing rclone-drive.service"
-    printf '%s\n' "$DESIRED_SERVICE" > "$SERVICE_FILE"
+    printf '%s\n' "$DESIRED_SERVICE" >"$SERVICE_FILE"
     systemctl --user daemon-reload
 fi
 
