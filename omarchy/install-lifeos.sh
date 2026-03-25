@@ -22,11 +22,11 @@ BINDINGS_FILE="$HOME/.config/hypr/bindings.conf"
 # ── 1. Dashboard: ensure lifeos-startpage service is running ───────────────────
 
 if systemctl --user is-active --quiet lifeos-startpage 2>/dev/null; then
-  echo "lifeos-startpage.service already running at http://localhost:4000"
+    echo "lifeos-startpage.service already running at http://localhost:4000"
 else
-  echo "Starting lifeos-startpage.service..."
-  systemctl --user start lifeos-startpage 2>/dev/null || \
-    echo "Warning: lifeos-startpage.service not found — run install-startpage.sh first."
+    echo "Starting lifeos-startpage.service..."
+    systemctl --user start lifeos-startpage 2>/dev/null ||
+        echo "Warning: lifeos-startpage.service not found — run install-startpage.sh first."
 fi
 
 # ── 2. Notes directory structure ───────────────────────────────────────────
@@ -43,7 +43,7 @@ mkdir -p "$NOTES_DIR/systems"
 
 # Create tasks.md only if it doesn't already exist
 if [ ! -f "$NOTES_DIR/tasks.md" ]; then
-  cat > "$NOTES_DIR/tasks.md" << 'EOF'
+    cat >"$NOTES_DIR/tasks.md" <<'EOF'
 # Tasks
 
 <!-- WTF dashboard reads this file. Use [ ] and [x] for checkboxes. -->
@@ -62,9 +62,9 @@ if [ ! -f "$NOTES_DIR/tasks.md" ]; then
 - [ ] 
 
 EOF
-  echo "Created $NOTES_DIR/tasks.md"
+    echo "Created $NOTES_DIR/tasks.md"
 else
-  echo "$NOTES_DIR/tasks.md already exists — skipping."
+    echo "$NOTES_DIR/tasks.md already exists — skipping."
 fi
 
 # Templates are managed by the dotfiles stow package (dotfiles/notes/).
@@ -78,29 +78,29 @@ echo "Notes structure ready at $NOTES_DIR"
 # Appends keybinds only if they are not already present in bindings.conf.
 
 if [ -f "$BINDINGS_FILE" ]; then
-  DASHBOARD_BIND='bindd = SUPER, D, Life OS Dashboard, exec, omarchy-launch-webapp "http://localhost:4000"'
-  WTF_BIND='bindd = SUPER SHIFT, T, WTF Dashboard, exec, uwsm-app -- xdg-terminal-exec wtf'
+    DASHBOARD_BIND='bindd = SUPER, D, Life OS Dashboard, exec, omarchy-launch-webapp "http://localhost:4000"'
+    WTF_BIND='bindd = SUPER SHIFT, T, WTF Dashboard, exec, uwsm-app -- xdg-terminal-exec wtf'
 
-  if ! grep -qF 'SUPER, D, ' "$BINDINGS_FILE"; then
-    echo "" >> "$BINDINGS_FILE"
-    echo "# LifeOS dashboard bindings (added by install-lifeos.sh)" >> "$BINDINGS_FILE"
-    echo "$DASHBOARD_BIND" >> "$BINDINGS_FILE"
-    echo "Added SUPER+D → Life OS keybind"
-  else
-    echo "SUPER+D keybind already present — skipping."
-  fi
+    if ! grep -qF 'SUPER, D, ' "$BINDINGS_FILE"; then
+        echo "" >>"$BINDINGS_FILE"
+        echo "# LifeOS dashboard bindings (added by install-lifeos.sh)" >>"$BINDINGS_FILE"
+        echo "$DASHBOARD_BIND" >>"$BINDINGS_FILE"
+        echo "Added SUPER+D → Life OS keybind"
+    else
+        echo "SUPER+D keybind already present — skipping."
+    fi
 
-  if ! grep -qF 'SUPER SHIFT, T, WTF Dashboard' "$BINDINGS_FILE"; then
-    echo "$WTF_BIND" >> "$BINDINGS_FILE"
-    echo "Added SUPER+SHIFT+T → WTF keybind"
-  else
-    echo "SUPER+SHIFT+T keybind already present — skipping."
-  fi
+    if ! grep -qF 'SUPER SHIFT, T, WTF Dashboard' "$BINDINGS_FILE"; then
+        echo "$WTF_BIND" >>"$BINDINGS_FILE"
+        echo "Added SUPER+SHIFT+T → WTF keybind"
+    else
+        echo "SUPER+SHIFT+T keybind already present — skipping."
+    fi
 else
-  echo "Warning: $BINDINGS_FILE not found — skipping Hyprland keybind injection."
-  echo "Manually add these to your bindings.conf:"
-  echo '  bindd = SUPER, D, Life OS Dashboard, exec, omarchy-launch-webapp "http://localhost:4000"'
-  echo '  bindd = SUPER SHIFT, T, WTF Dashboard, exec, uwsm-app -- xdg-terminal-exec wtf'
+    echo "Warning: $BINDINGS_FILE not found — skipping Hyprland keybind injection."
+    echo "Manually add these to your bindings.conf:"
+    echo '  bindd = SUPER, D, Life OS Dashboard, exec, omarchy-launch-webapp "http://localhost:4000"'
+    echo '  bindd = SUPER SHIFT, T, WTF Dashboard, exec, uwsm-app -- xdg-terminal-exec wtf'
 fi
 
 echo ""
