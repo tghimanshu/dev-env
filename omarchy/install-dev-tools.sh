@@ -33,3 +33,5 @@ yay -S --noconfirm --needed anki
 
 # lazygit — git TUI (great inside nvim terminal)
 yay -S --noconfirm --needed lazygit
+
+yay -S --noconfirm --needed doppler-cli
