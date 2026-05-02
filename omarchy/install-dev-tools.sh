@@ -35,3 +35,6 @@ yay -S --noconfirm --needed anki
 yay -S --noconfirm --needed lazygit
 
 yay -S --noconfirm --needed doppler-cli
+
+yay -S --noconfirm --needed vim # to get [xxd] which is a hex dump tool  we install vim as it contains it
+yay -S --noconfirm --needed lsd
